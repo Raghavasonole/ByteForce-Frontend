@@ -12,7 +12,7 @@ export const navigation = [
   {
     id: "dwg-intelligence",
     label: "Inspection Agent",
-    icon: "document"
+    icon: "document",
   },
   {
     id: "knowledge",
@@ -59,14 +59,14 @@ export const adminNavigation = [
     icon: "home",
   },
   {
+    id: "admin-inspection-agent",
+    label: "Inspection Agent",
+    icon: "document",
+  },
+  {
     id: "admin-workbench",
     label: "Workbench",
     icon: "work",
-  },
-  {
-    id: "Inspection Agent",
-    label: "Inspection Agent",
-    icon: "document"
   },
   {
     id: "admin-knowledge",
@@ -88,7 +88,13 @@ export const adminNavigation = [
     label: "Audit Logs",
     icon: "report",
   },
+  {
+    id: "users-permissions",
+    label: "Users & Permissions",
+    icon: "equipment",
+  },
 ];
+
 
 export const adminSettingsNavigation = {
   id: "admin-settings",

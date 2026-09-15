@@ -1,162 +1,201 @@
-function AdminOverview() {
-  
+import { useState } from "react";
 
-  const activeTasks = [
+function AdminOverview({
+  setAgentExecution,
+  agentExecution,
+  generatedResponse,
+  setGeneratedResponse,
+}) {
+  const [question, setQuestion] = useState("");
+  const [showAttachments, setShowAttachments] = useState(false);
+
+  const workflowSteps = [
     {
-      name: "P-204 Inspection Analysis",
-      description: "AI-assisted equipment inspection workflow",
-      progress: "72%",
+      title: "Understanding request",
+      text: "Interpreting the requested industrial task.",
     },
     {
-      name: "Maintenance Report Review",
-      description: "Document validation and report generation",
-      progress: "48%",
+      title: "Searching knowledge base",
+      text: "Retrieving relevant internal procedures and manuals.",
     },
     {
-      name: "Safety Procedure Summary",
-      description: "Knowledge base processing task",
-      progress: "26%",
+      title: "Matching evidence",
+      text: "Comparing available documents and findings.",
+    },
+    {
+      title: "Checking history",
+      text: "Reviewing previous inspection and maintenance records.",
+    },
+    {
+      title: "Preparing response",
+      text: "Combining verified workspace information.",
     },
   ];
 
-  const activities = [
-    {
-      title: "AI task completed",
-      time: "2 min ago",
-      text: "P-203 inspection analysis completed successfully.",
-    },
-    {
-      title: "Document uploaded",
-      time: "8 min ago",
-      text: "Maintenance_SOP_2026.pdf was added to the workspace.",
-    },
-    {
-      title: "Knowledge base updated",
-      time: "15 min ago",
-      text: "Safety Inspection SOP finished indexing.",
-    },
-    {
-      title: "Administrator login",
-      time: "21 min ago",
-      text: "System administrator signed in to the workspace.",
-    },
-  ];
+  const runAgent = () => {
+    if (!question.trim()) {
+      return;
+    }
+
+    setGeneratedResponse("");
+    setShowAttachments(false);
+
+    setAgentExecution({
+      question: question,
+      steps: workflowSteps,
+      currentStep: 1,
+      running: true,
+    });
+
+    setTimeout(() => {
+      setAgentExecution((current) => ({
+        ...current,
+        currentStep: 2,
+      }));
+    }, 700);
+
+    setTimeout(() => {
+      setAgentExecution((current) => ({
+        ...current,
+        currentStep: 3,
+      }));
+    }, 1400);
+
+    setTimeout(() => {
+      setAgentExecution((current) => ({
+        ...current,
+        currentStep: 4,
+      }));
+    }, 2100);
+
+    setTimeout(() => {
+      setAgentExecution((current) => ({
+        ...current,
+        currentStep: 5,
+        running: false,
+      }));
+
+      setGeneratedResponse(
+        "The requested task was completed using the available internal workspace information. Relevant procedures, documents and previous findings were considered while preparing the response."
+      );
+    }, 2800);
+  };
 
   return (
-    <div className="overview-page admin-overview-page">
-      <div className="page-header">
-        <div>
-          <h1>Admin Overview</h1>
-          <p>Monitor workspace activity, tasks and system operations.</p>
-        </div>
-      </div>
+    <div
+      className={`admin-agent-page ${
+        agentExecution ? "execution-open" : ""
+      }`}
+    >
+      <div className="admin-agent-main">
+        <div className="admin-agent-layout">
+          <div className="admin-agent-left">
 
-      <div className="stat-grid">
-        <div className="app-card stat-card">
-          <span className="stat-label">Active Users</span>
-          <strong className="stat-value">24</strong>
-          <span className="stat-detail">Currently active</span>
-        </div>
+            <div className="workbench-card admin-ask-card">
+              <div className="card-eyebrow">
+                ASK AI
+              </div>
 
-        <div className="app-card stat-card">
-          <span className="stat-label">Tasks Today</span>
-          <strong className="stat-value">128</strong>
-          <span className="stat-detail">Tasks processed</span>
-        </div>
+              <div className="admin-agent-input">
+                <textarea
+                  value={question}
+                  onChange={(event) =>
+                    setQuestion(event.target.value)
+                  }
+                  placeholder="Ask the local agent to analyze a document, inspect equipment, search the knowledge base or prepare a report..."
+                />
 
-        <div className="app-card stat-card">
-          <span className="stat-label">Documents</span>
-          <strong className="stat-value">342</strong>
-          <span className="stat-detail">Indexed documents</span>
-        </div>
+                <button
+                  type="button"
+                  className="admin-agent-mic"
+                  onClick={() =>
+                    alert("Voice input - demo only")
+                  }
+                >
+                  🎙
+                </button>
+              </div>
 
-        <div className="app-card stat-card">
-          <span className="stat-label">System Status</span>
-          <strong className="stat-value">Online</strong>
-          <span className="stat-detail">All services operational</span>
-        </div>
-      </div>
+              <div className="admin-ask-actions">
+                <div className="admin-ask-tools">
+                  <div className="admin-agent-menu">
+                    <button
+                      type="button"
+                      className="admin-agent-plus"
+                      onClick={() =>
+                        setShowAttachments(!showAttachments)
+                      }
+                    >
+                      +
+                    </button>
 
+                    {showAttachments && (
+                      <div className="admin-agent-menu-dropdown">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            alert("Image upload - demo only")
+                          }
+                        >
+                          Image Upload
+                        </button>
 
-      <div className="overview-two-column">
-        <div>
-          <div className="section-heading-row">
-            <div>
-              <h2>Active Tasks</h2>
-              <p>Currently running workspace operations.</p>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            alert("File upload - demo only")
+                          }
+                        >
+                          File Upload
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className="workbench-submit"
+                  onClick={runAgent}
+                >
+                  Run agent →
+                </button>
+              </div>
             </div>
 
-            <button
-              type="button"
-              className="section-link"
-              onClick={() => setActivePage("admin-tasks")}
-            >
-              View all
-            </button>
-          </div>
-
-          <div className="active-tasks-list">
-            {activeTasks.map((task) => (
-              <div className="app-card task-card" key={task.name}>
-                <div className="task-card-top">
+            {generatedResponse && (
+              <div className="workbench-card admin-response-card">
+                <div className="admin-response-header">
                   <div>
-                    <h3>{task.name}</h3>
-                    <p>{task.description}</p>
+                    <h2>Generated response</h2>
                   </div>
 
-                  <span className="status-badge in-progress">
-                    Running
+                  <span className="admin-response-status">
+                    Verified
                   </span>
                 </div>
 
-                <div className="task-progress">
-                  <div className="task-progress-track">
-                    <div
-                      className="task-progress-fill"
-                      style={{ width: task.progress }}
-                    />
-                  </div>
+                <p>{generatedResponse}</p>
 
-                  <span>{task.progress}</span>
+                <div className="evidence-panel">
+                  <span className="card-eyebrow">
+                    EVIDENCE & SOURCES
+                  </span>
+
+                  <p>
+                    PT-101 Manual.pdf · p. 18–24
+                  </p>
+
+                  <p>
+                    Unit-A Inspection Report.pdf · p. 6
+                  </p>
+
+                  <p>
+                    Instrumentation Standards.docx · section 4.2
+                  </p>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <div className="section-heading-row">
-            <div>
-              <h2>Recent Activity</h2>
-              <p>Latest workspace events.</p>
-            </div>
-
-            <button
-              type="button"
-              className="section-link"
-              onClick={() => setActivePage("audit-logs")}
-            >
-              Audit logs
-            </button>
-          </div>
-
-          <div className="app-card activity-card">
-            <div className="activity-list">
-              {activities.map((activity) => (
-                <div className="activity-item" key={activity.title}>
-                  <div className="activity-marker"></div>
-
-                  <div className="activity-content">
-                    <div className="activity-title-row">
-                      <strong>{activity.title}</strong>
-                      <span>{activity.time}</span>
-                    </div>
-
-                    <p>{activity.text}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            )}
           </div>
         </div>
       </div>

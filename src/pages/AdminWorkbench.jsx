@@ -1,238 +1,276 @@
 import { useState } from "react";
 
 function AdminWorkbench() {
-  const [question, setQuestion] = useState(
-    "Analyze the inspection requirements for PT-101 and identify the relevant internal procedures."
-  );
+  const [message, setMessage] = useState("");
+  const [showAttachments, setShowAttachments] = useState(false);
+  const [showModels, setShowModels] = useState(false);
+  const [selectedModel, setSelectedModel] = useState("Model");
+  const [activeChat, setActiveChat] = useState("P-204 Inspection");
 
-  const [running, setRunning] = useState(false);
-  const [step, setStep] = useState(0);
-
-  const workflow = [
+  const chats = [
     {
-      title: "Read gauge photo",
-      detail: "detected 4.1 bar",
+      name: "P-204 Inspection",
+      time: "2 min ago",
+      messages: [
+        {
+          role: "agent",
+          text:
+            "Hello. I am the local industrial AI assistant. How can I help with your inspection task?",
+        },
+      ],
     },
     {
-      title: "Searched knowledge base",
-      detail: "3 passages retrieved",
+      name: "Safety SOP Summary",
+      time: "18 min ago",
+      messages: [
+        {
+          role: "user",
+          text: "Summarize the Safety Inspection SOP.",
+        },
+        {
+          role: "agent",
+          text:
+            "The Safety Inspection SOP covers inspection preparation, equipment checks, safety controls and reporting requirements.",
+        },
+      ],
     },
     {
-      title: "Matched",
-      detail: "SOP-114 §4.2 · rated spec",
+      name: "Maintenance Review",
+      time: "1 hr ago",
+      messages: [
+        {
+          role: "user",
+          text: "Review the maintenance history for P-204.",
+        },
+        {
+          role: "agent",
+          text:
+            "The available maintenance records show recurring inspection and servicing activity for P-204.",
+        },
+      ],
     },
     {
-      title: "Cross-referenced incident history",
-      detail: "matched Incident-2024-11",
-    },
-    {
-      title: "Verified findings",
-      detail: "extraction, spec and incident pattern agree",
+      name: "Pipeline Guidelines",
+      time: "Yesterday",
+      messages: [
+        {
+          role: "user",
+          text: "Find the pipeline inspection guidelines.",
+        },
+        {
+          role: "agent",
+          text:
+            "Relevant pipeline inspection guidelines are available in the internal knowledge base.",
+        },
+      ],
     },
   ];
 
-  const runAgent = () => {
-    if (!question.trim()) {
+  const selectedChat =
+    chats.find((chat) => chat.name === activeChat) || chats[0];
+
+  const [messages, setMessages] = useState(selectedChat.messages);
+
+  const openChat = (chat) => {
+    setActiveChat(chat.name);
+    setMessages(chat.messages);
+  };
+
+  const sendMessage = () => {
+    if (!message.trim()) {
       return;
     }
 
-    setRunning(true);
-    setStep(1);
+    setMessages((currentMessages) => [
+      ...currentMessages,
+      {
+        role: "user",
+        text: message,
+      },
+      {
+        role: "agent",
+        text:
+          "I received your request. The local workflow would now analyze the relevant workspace sources and return an evidence-backed response.",
+      },
+    ]);
 
-    setTimeout(() => {
-      setStep(2);
-    }, 1000);
-
-    setTimeout(() => {
-      setStep(3);
-    }, 2000);
-
-    setTimeout(() => {
-      setStep(4);
-    }, 3000);
-
-    setTimeout(() => {
-      setStep(5);
-      setRunning(false);
-    }, 4000);
+    setMessage("");
+    setShowAttachments(false);
+    setShowModels(false);
   };
 
   return (
     <div className="workbench-page admin-workbench-page">
-      <div className="page-header">
+      <div className="page-header admin-workbench-header">
         <div>
           <h1>Workbench</h1>
 
           <p>
-            Run confidential industrial analysis with
-            evidence-backed results.
+            Chat with the local industrial AI assistant using
+            confidential workspace data.
           </p>
         </div>
       </div>
 
-      <div className="workbench-layout">
-        <div className="workbench-main">
-          <div className="workbench-card">
-            <div className="workbench-card-header">
-              <div>
-                <span className="page-eyebrow">ASK AI</span>
+      <div className="admin-workbench-content">
+        <div className="admin-chat-panel">
+          <div className="admin-chat-messages">
+            {messages.map((item, index) => (
+              <div
+                className={`admin-chat-message ${item.role}`}
+                key={`${activeChat}-${index}`}
+              >
+                <div className="admin-chat-avatar">
+                  {item.role === "agent" ? "AI" : "U"}
+                </div>
+
+                <div className="admin-chat-bubble">
+                  <p>{item.text}</p>
+                </div>
               </div>
-            </div>
-
-            <textarea
-              value={question}
-              onChange={(event) =>
-                setQuestion(event.target.value)
-              }
-            />
-
-            <div className="workbench-actions">
-              <button
-                className="workbench-action"
-                type="button"
-              >
-                ＋ Attach
-              </button>
-
-              <button
-                className="workbench-action"
-                type="button"
-              >
-                Evidence-backed
-              </button>
-
-              <button
-                className="workbench-action"
-                type="button"
-              >
-                Internal KB
-              </button>
-
-              <button
-                className="workbench-submit"
-                type="button"
-                onClick={runAgent}
-              >
-                {running ? "Running..." : "Run agent →"}
-              </button>
-            </div>
+            ))}
           </div>
 
-          <div className="workbench-card">
-            <div className="workbench-card-header">
-              <div>
-                <h2>Generated response</h2>
-              </div>
+          <div className="admin-chat-composer">
+            <div className="admin-chat-bottom">
+              
+              {/* Plus */}
+              <div className="admin-chat-menu">
+                <button
+                  type="button"
+                  className="admin-chat-tool-button"
+                  onClick={() => {
+                    setShowAttachments(!showAttachments);
+                    setShowModels(false);
+                  }}
+                >
+                  +
+                </button>
 
-              <span className="execution-status">
-                Verified
-              </span>
-            </div>
-
-            <p>
-              PT-101 inspection should reference the internal
-              pressure-instrument maintenance procedure and the
-              Unit-A inspection standard. The relevant evidence is
-              available in the indexed maintenance manual and
-              inspection report.
-            </p>
-
-            <div className="workbench-card evidence-panel">
-              <span className="page-eyebrow">
-                EVIDENCE & SOURCES
-              </span>
-
-              <p>PT-101 Manual.pdf · p. 18–24</p>
-              <p>Unit-A Inspection Report.pdf · p. 6</p>
-              <p>
-                Instrumentation Standards.docx · section 4.2
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="agent-execution-panel">
-          <div className="workbench-card">
-            <div className="workbench-card-header">
-              <div>
-                <h2>Agent execution</h2>
-              </div>
-            </div>
-
-            <div className="agent-status">
-              <span
-                className={
-                  running
-                    ? "agent-status-dot active"
-                    : "agent-status-dot"
-                }
-              ></span>
-
-              {running
-                ? "THINKING · Local agent orchestration"
-                : "READY · Verified · Local"}
-            </div>
-
-            <div className="execution-list">
-              {step === 0 && (
-                <p className="execution-empty">
-                  Run the agent to see the workflow.
-                </p>
-              )}
-
-              {workflow.map((item, index) => {
-                const number = index + 1;
-
-                if (number > step) {
-                  return null;
-                }
-
-                if (item.title === "Matched") {
-                  return (
-                    <div
-                      className="execution-match"
-                      key={item.title}
+                {showAttachments && (
+                  <div className="admin-chat-menu-dropdown">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        alert("Image upload - demo only")
+                      }
                     >
-                      <span>✓</span>
+                      Image Upload
+                    </button>
 
-                      <div>
-                        <small>Matched</small>
-                        <strong>{item.detail}</strong>
-                      </div>
-                    </div>
-                  );
-                }
-
-                return (
-                  <div
-                    className="execution-line"
-                    key={item.title}
-                  >
-                    <span>✓</span>
-
-                    <div>
-                      <strong>{item.title}</strong>
-                      <small> · {item.detail}</small>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        alert("File upload - demo only")
+                      }
+                    >
+                      File Upload
+                    </button>
                   </div>
-                );
-              })}
+                )}
+              </div>
 
-              {running && (
-                <div className="execution-thinking">
-                  <span></span>
-                  <p>Working...</p>
-                </div>
-              )}
+              {/* Model */}
+              <div className="admin-chat-menu">
+                <button
+                  type="button"
+                  className="admin-chat-model-button"
+                  onClick={() => {
+                    setShowModels(!showModels);
+                    setShowAttachments(false);
+                  }}
+                >
+                  {selectedModel}
+                </button>
 
-              {!running && step === 5 && (
-                <div className="execution-complete">
-                  ✓ Reasoning complete · sources linked above
-                </div>
-              )}
+                {showModels && (
+                  <div className="admin-chat-menu-dropdown model-menu">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedModel("Qwen-Instruct");
+                        setShowModels(false);
+                      }}
+                    >
+                      Qwen-Instruct
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedModel("Qwen-Code");
+                        setShowModels(false);
+                      }}
+                    >
+                      Qwen-Code
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Message */}
+              <textarea
+                value={message}
+                onChange={(event) =>
+                  setMessage(event.target.value)
+                }
+                placeholder="Message the local agent..."
+                onKeyDown={(event) => {
+                  if (
+                    event.key === "Enter" &&
+                    !event.shiftKey
+                  ) {
+                    event.preventDefault();
+                    sendMessage();
+                  }
+                }}
+              />
+
+              {/* Upload */}
+              
+
+              {/* Send */}
+              <button
+                type="button"
+                className="admin-chat-send"
+                onClick={sendMessage}
+              >
+                ↑
+              </button>
             </div>
           </div>
         </div>
+
+        <aside className="admin-recent-chats">
+          <div className="recent-chats-header">
+            <div>
+              <h2>Recent Chats</h2>
+              <p>Your previous agent conversations.</p>
+            </div>
+
+            <button type="button">＋</button>
+          </div>
+
+          <div className="recent-chats-list">
+            {chats.map((chat) => (
+              <button
+                type="button"
+                key={chat.name}
+                className={`recent-chat-item ${
+                  activeChat === chat.name ? "active" : ""
+                }`}
+                onClick={() => openChat(chat)}
+              >
+                <div>
+                  <strong>{chat.name}</strong>
+                  <span>{chat.time}</span>
+                </div>
+
+                <span className="recent-chat-arrow">→</span>
+              </button>
+            ))}
+          </div>
+        </aside>
       </div>
     </div>
   );
