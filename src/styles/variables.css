@@ -1,0 +1,27 @@
+:root {
+  --bg: #101010;
+  --sidebar-bg: #181818;
+  --surface: #161616;
+  --surface-hover: #1d1d1d;
+
+  --accent-red: #e30613;
+  --accent-red-dark: #b8000c;
+  --accent-red-soft: rgba(227, 6, 19, 0.14);
+
+  --text-primary: #ffffff;
+  --text-secondary: #b5b5b5;
+  --text-muted: #777777;
+
+  --border: #2b2b2b;
+  --border-light: #353535;
+
+  --white: #ffffff;
+  --black: #000000;
+
+  --sidebar-width: 248px;
+  --sidebar-collapsed-width: 64px;
+  --topbar-height: 64px;
+
+  --radius: 5px;
+  --transition: 0.2s ease;
+}

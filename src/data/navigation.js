@@ -1,0 +1,97 @@
+export const navigation = [
+  {
+    id: "overview",
+    label: "Overview",
+    icon: "home",
+  },
+  {
+    id: "workbench",
+    label: "Workbench",
+    icon: "work",
+  },
+  {
+    id: "dwg-intelligence",
+    label: "Inspection Agent",
+    icon: "document"
+  },
+  {
+    id: "knowledge",
+    label: "Knowledge Base",
+    icon: "book",
+  },
+  {
+    id: "equipment",
+    label: "Equipment",
+    icon: "equipment",
+  },
+  {
+    id: "documents",
+    label: "Documents",
+    icon: "document",
+  },
+  {
+    id: "reports",
+    label: "Reports",
+    icon: "report",
+  },
+  {
+    id: "tasks",
+    label: "My Tasks",
+    icon: "tasks",
+  },
+  {
+    id: "notifications",
+    label: "Notifications",
+    icon: "notifications",
+  },
+];
+
+export const settingsNavigation = {
+  id: "settings",
+  label: "Settings",
+  icon: "settings",
+};
+
+export const adminNavigation = [
+  {
+    id: "admin-overview",
+    label: "Overview",
+    icon: "home",
+  },
+  {
+    id: "admin-workbench",
+    label: "Workbench",
+    icon: "work",
+  },
+  {
+    id: "Inspection Agent",
+    label: "Inspection Agent",
+    icon: "document"
+  },
+  {
+    id: "admin-knowledge",
+    label: "Knowledge Base",
+    icon: "book",
+  },
+  {
+    id: "admin-tasks",
+    label: "Tasks",
+    icon: "tasks",
+  },
+  {
+    id: "admin-documents",
+    label: "Documents",
+    icon: "document",
+  },
+  {
+    id: "audit-logs",
+    label: "Audit Logs",
+    icon: "report",
+  },
+];
+
+export const adminSettingsNavigation = {
+  id: "admin-settings",
+  label: "Admin Settings",
+  icon: "settings",
+};
