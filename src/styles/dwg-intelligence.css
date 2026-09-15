@@ -1,0 +1,1237 @@
+.dwg-workspace {
+  height: calc(100vh - var(--topbar-height));
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 390px;
+
+  background: #0d0d0d;
+
+  overflow: hidden;
+}
+
+
+
+.dwg-canvas-section {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #111111;
+
+  border-right: 1px solid var(--border);
+}
+
+
+
+.dwg-toolbar {
+  height: 58px;
+  min-height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 16px;
+
+  border-bottom: 1px solid var(--border);
+
+  background: #151515;
+}
+
+.dwg-file-info {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  min-width: 0;
+}
+
+.dwg-file-icon {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #3b3b3b;
+
+  background: #1d1d1d;
+
+  color: #bdbdbd;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+
+  flex-shrink: 0;
+}
+
+.dwg-file-name {
+  font-size: 12px;
+  font-weight: 600;
+
+  color: #eeeeee;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dwg-file-meta {
+  margin-top: 3px;
+
+  color: #777777;
+
+  font-size: 10px;
+}
+
+.dwg-toolbar-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  flex-shrink: 0;
+}
+
+.dwg-tool-button,
+.dwg-inspect-button {
+  height: 32px;
+
+  padding: 0 11px;
+
+  border: 1px solid #333333;
+
+  background: #1a1a1a;
+
+  color: #bdbdbd;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.dwg-tool-button:hover {
+  background: #222222;
+
+  border-color: #444444;
+
+  color: #ffffff;
+}
+
+.dwg-zoom-value {
+  width: 45px;
+
+  text-align: center;
+
+  color: #8b8b8b;
+
+  font-size: 10px;
+}
+
+.dwg-inspect-button {
+  margin-left: 6px;
+
+  background: #e30613;
+
+  border-color: #e30613;
+
+  color: #ffffff;
+
+  font-weight: 600;
+}
+
+.dwg-inspect-button:hover {
+  background: #b8000c;
+
+  border-color: #b8000c;
+}
+
+
+
+.dwg-canvas-wrapper {
+  position: relative;
+
+  flex: 1;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  background-color: #0b0b0b;
+
+ 
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.045) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.045) 1px,
+      transparent 1px
+    );
+
+  background-size: 32px 32px;
+
+  background-position: 0 0;
+
+  cursor: grab;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  touch-action: none;
+
+  overscroll-behavior: none;
+}
+
+.dwg-canvas-wrapper.is-panning {
+  cursor: grabbing;
+}
+
+
+
+.dwg-canvas {
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+ 
+
+  width: 1400px;
+  height: 900px;
+
+  transform-origin: top left;
+
+  will-change: transform;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+ 
+}
+
+
+
+.dwg-document {
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+}
+
+
+
+.dwg-svg {
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  display: block;
+
+  opacity: 0;
+
+  user-select: none;
+  -webkit-user-drag: none;
+
+  pointer-events: none;
+
+  mix-blend-mode: screen;
+
+  transition:
+    opacity 0.2s ease;
+}
+
+.dwg-svg.loaded {
+  opacity: 1;
+}
+
+
+
+.dwg-loading {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  pointer-events: none;
+}
+
+.dwg-loading-title {
+  font-size: 16px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.02em;
+}
+
+.dwg-loading-text {
+  margin-top: 6px;
+
+  font-size: 12px;
+
+  opacity: 0.5;
+}
+
+
+
+.dwg-error {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+}
+
+.dwg-error-title {
+  font-size: 16px;
+
+  font-weight: 600;
+}
+
+.dwg-error-text {
+  margin-top: 8px;
+
+  font-size: 12px;
+
+  opacity: 0.55;
+}
+
+.dwg-error code {
+  margin-top: 8px;
+
+  padding: 7px 10px;
+
+  font-size: 11px;
+
+  border-radius: 5px;
+
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.cad-issue-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: visible;
+
+  pointer-events: none;
+}
+
+
+
+
+.cad-highlight-glow {
+  fill: none;
+
+  stroke-width: 2.2;
+
+  vector-effect: non-scaling-stroke;
+
+  opacity: 0.28;
+
+  filter: blur(5px);
+}
+
+
+
+
+.cad-highlight-line {
+  fill: none;
+
+  stroke-width: 1.4;
+
+  vector-effect: non-scaling-stroke;
+
+  stroke-dasharray: 7 5;
+
+  animation:
+    cadIssuePulse 1.6s ease-in-out infinite;
+}
+
+
+
+
+.cad-highlight-critical {
+  stroke: #ff3b30;
+}
+
+
+
+
+.cad-highlight-warning {
+  stroke: #f5a623;
+}
+
+
+
+
+.cad-issue-overlay.is-selected
+  .cad-highlight-line {
+  stroke-width: 2.2;
+
+  stroke-dasharray: none;
+}
+
+
+
+
+.cad-issue-interaction {
+  position: absolute;
+
+  z-index: 10;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  pointer-events: auto;
+}
+
+
+
+
+.cad-issue-interaction:hover {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.025
+  );
+}
+
+
+
+
+@keyframes cadIssuePulse {
+  0% {
+    opacity: 0.65;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.65;
+  }
+}
+
+
+
+.issue-marker {
+  position: absolute;
+
+  width: 28px;
+  height: 28px;
+
+  margin-left: -14px;
+  margin-top: -14px;
+
+  border-radius: 50%;
+
+  border: 2px solid #111111;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  z-index: 30;
+
+  pointer-events: auto;
+
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 0.04);
+
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.issue-marker.critical {
+  background: #e30613;
+}
+
+.issue-marker.warning {
+  background: #a87900;
+}
+
+.issue-marker:hover {
+  transform: scale(1.12);
+
+  box-shadow:
+    0 0 0 5px rgba(255, 255, 255, 0.07);
+}
+
+
+
+.dwg-statusbar {
+  height: 34px;
+  min-height: 34px;
+
+  padding: 0 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-top: 1px solid var(--border);
+
+  background: #151515;
+
+  color: #777777;
+
+  font-size: 9px;
+}
+
+.dwg-statusbar > div {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #777777;
+}
+
+.status-summary {
+  gap: 15px !important;
+}
+
+.critical-text {
+  color: #d94a52;
+}
+
+
+
+.dwg-agent-panel {
+  height: 100%;
+
+  overflow-y: auto;
+
+  background: #141414;
+}
+
+.dwg-agent-panel::-webkit-scrollbar {
+  width: 5px;
+}
+
+.dwg-agent-panel::-webkit-scrollbar-thumb {
+  background: #333333;
+}
+
+.dwg-agent-panel::-webkit-scrollbar-track {
+  background: #141414;
+}
+
+
+
+.agent-section {
+  border-bottom: 1px solid #292929;
+}
+
+.agent-section-header {
+  width: 100%;
+  height: 43px;
+
+  padding: 0 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border: none;
+
+  background: #171717;
+
+  color: #d5d5d5;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  text-align: left;
+}
+
+.agent-section-header:hover {
+  background: #1b1b1b;
+}
+
+.agent-section-header span:last-child {
+  color: #777777;
+
+  font-size: 15px;
+}
+
+.agent-section-body {
+  padding: 12px 14px;
+
+  background: #121212;
+}
+
+
+
+.trace-step {
+  display: flex;
+
+  gap: 10px;
+
+  position: relative;
+
+  padding-bottom: 13px;
+}
+
+.trace-step:not(:last-child)::after {
+  content: "";
+
+  position: absolute;
+
+  left: 11px;
+
+  top: 24px;
+
+  bottom: 2px;
+
+  width: 1px;
+
+  background: #333333;
+}
+
+.trace-number {
+  width: 23px;
+  height: 23px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #3b3b3b;
+
+  background: #1d1d1d;
+
+  color: #777777;
+
+  font-size: 9px;
+
+  z-index: 2;
+}
+
+.trace-step.completed .trace-number {
+  color: #bbbbbb;
+}
+
+.trace-step.active .trace-number {
+  background: #e30613;
+
+  border-color: #e30613;
+
+  color: #ffffff;
+}
+
+.trace-step strong {
+  display: block;
+
+  color: #bdbdbd;
+
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+.trace-step.active strong {
+  color: #ffffff;
+}
+
+.trace-step small {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #666666;
+
+  font-size: 9px;
+}
+
+
+
+.overview-grid {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 6px;
+}
+
+.overview-card {
+  padding: 10px;
+
+  border: 1px solid #292929;
+
+  background: #181818;
+}
+
+.overview-card strong {
+  display: block;
+
+  color: #eeeeee;
+
+  font-size: 17px;
+
+  font-weight: 600;
+}
+
+.overview-card span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #666666;
+
+  font-size: 8px;
+}
+
+.overview-card.critical-card strong {
+  color: #d94a52;
+}
+
+
+
+.context-item {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 8px 0;
+
+  border-bottom: 1px solid #252525;
+}
+
+.context-item:last-child {
+  border-bottom: none;
+}
+
+.context-type {
+  width: 30px;
+  height: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #333333;
+
+  background: #1c1c1c;
+
+  color: #858585;
+
+  font-size: 7px;
+
+  font-weight: 700;
+}
+
+.context-item strong {
+  display: block;
+
+  color: #aaaaaa;
+
+  font-size: 9px;
+}
+
+.context-item small {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #606060;
+
+  font-size: 8px;
+}
+
+
+
+.response-card {
+  padding: 12px;
+
+  border: 1px solid #303030;
+
+  background: #181818;
+}
+
+.response-top {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.issue-status {
+  padding: 4px 7px;
+
+  font-size: 7px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+}
+
+.issue-status.critical {
+  background: rgba(227, 6, 19, 0.12);
+
+  color: #e36a71;
+}
+
+.issue-status.warning {
+  background: rgba(168, 121, 0, 0.12);
+
+  color: #c8a24b;
+}
+
+.issue-id {
+  color: #555555;
+
+  font-size: 8px;
+}
+
+.response-card h3 {
+  margin: 11px 0 7px;
+
+  color: #e2e2e2;
+
+  font-size: 11px;
+
+  line-height: 1.4;
+}
+
+.response-card p {
+  margin: 0;
+
+  color: #888888;
+
+  font-size: 9px;
+
+  line-height: 1.6;
+}
+
+.response-location,
+.response-source {
+  margin-top: 11px;
+
+  padding-top: 9px;
+
+  border-top: 1px solid #292929;
+}
+
+.response-location span,
+.response-source span {
+  display: block;
+
+  color: #555555;
+
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+}
+
+.response-location strong,
+.response-source strong {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #a5a5a5;
+
+  font-size: 9px;
+}
+
+
+
+.qa-history {
+  margin-bottom: 10px;
+}
+
+.qa-question {
+  padding: 8px;
+
+  border-left: 2px solid #444444;
+
+  background: #181818;
+
+  color: #aaaaaa;
+
+  font-size: 9px;
+
+  line-height: 1.5;
+}
+
+.qa-answer {
+  padding: 9px;
+
+  color: #777777;
+
+  font-size: 9px;
+
+  line-height: 1.6;
+}
+
+.qa-input-wrapper {
+  display: flex;
+
+  border: 1px solid #303030;
+
+  background: #181818;
+}
+
+.qa-input-wrapper input {
+  flex: 1;
+
+  min-width: 0;
+
+  height: 31px;
+
+  padding: 0 9px;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+
+  color: #dddddd;
+
+  font-family: inherit;
+
+  font-size: 9px;
+}
+
+.qa-input-wrapper input::placeholder {
+  color: #555555;
+}
+
+.qa-input-wrapper button {
+  width: 34px;
+
+  border: none;
+
+  border-left: 1px solid #303030;
+
+  background: transparent;
+
+  color: #999999;
+
+  cursor: pointer;
+}
+
+.qa-input-wrapper button:hover {
+  color: #ffffff;
+}
+
+
+
+.verification-question {
+  display: flex;
+
+  gap: 9px;
+
+  padding-bottom: 12px;
+
+  margin-bottom: 12px;
+
+  border-bottom: 1px solid #282828;
+}
+
+.verification-question:last-child {
+  margin-bottom: 0;
+
+  padding-bottom: 0;
+
+  border-bottom: none;
+}
+
+.verification-question > span {
+  color: #555555;
+
+  font-size: 8px;
+
+  padding-top: 2px;
+}
+
+.verification-question strong {
+  display: block;
+
+  color: #a7a7a7;
+
+  font-size: 9px;
+
+  line-height: 1.5;
+}
+
+.verification-buttons {
+  display: flex;
+
+  gap: 5px;
+
+  margin-top: 8px;
+}
+
+.verification-buttons button {
+  padding: 5px 9px;
+
+  border: 1px solid #333333;
+
+  background: #191919;
+
+  color: #777777;
+
+  font-family: inherit;
+
+  font-size: 8px;
+
+  cursor: pointer;
+}
+
+.verification-buttons button:hover {
+  border-color: #555555;
+
+  color: #dddddd;
+}
+
+.verification-buttons .verify-false {
+  border-color: #5c2529;
+
+  color: #d46b72;
+}
+
+
+
+.agent-issues {
+  padding: 13px 14px;
+}
+
+.issues-title {
+  margin-bottom: 8px;
+
+  color: #666666;
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.7px;
+}
+
+.issue-list-item {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 9px 7px;
+
+  margin-bottom: 4px;
+
+  border: 1px solid transparent;
+
+  background: #171717;
+
+  color: #aaaaaa;
+
+  font-family: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.issue-list-item:hover {
+  background: #1b1b1b;
+}
+
+.issue-list-item.selected {
+  border-color: #333333;
+}
+
+.issue-list-dot {
+  width: 6px;
+  height: 6px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+}
+
+.issue-list-dot.critical {
+  background: #e30613;
+}
+
+.issue-list-dot.warning {
+  background: #a87900;
+}
+
+.issue-list-item div {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.issue-list-item strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #aaaaaa;
+
+  font-size: 9px;
+
+  font-weight: 500;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.issue-list-item small {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #555555;
+
+  font-size: 8px;
+}
+
+.issue-arrow {
+  color: #555555;
+
+  font-size: 15px;
+}
+
+
+
+@media (max-width: 1100px) {
+  .dwg-workspace {
+    grid-template-columns:
+      minmax(0, 1fr)
+      340px;
+  }
+
+  .dwg-toolbar-actions
+    .dwg-tool-button:nth-child(5) {
+    display: none;
+  }
+}
+
+@media (max-width: 850px) {
+  .dwg-workspace {
+    grid-template-columns: 1fr;
+
+    grid-template-rows:
+      55vh
+      auto;
+
+    overflow: auto;
+  }
+
+  .dwg-canvas-section {
+    min-height: 55vh;
+  }
+
+  .dwg-agent-panel {
+    height: auto;
+  }
+
+  .dwg-toolbar {
+    padding: 0 10px;
+  }
+
+  .dwg-file-meta {
+    display: none;
+  }
+
+  .dwg-inspect-button {
+    display: none;
+  }
+}
