@@ -182,3 +182,103 @@
     border-right-color: var(--border);
   }
 }
+
+
+/* =========================================
+   GLOBAL AGENT READY ICON
+   ========================================= */
+
+.global-agent-ready {
+  position: fixed;
+  top: 82px;
+  right: 28px;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #2b2b2b;
+  border-radius: 50%;
+
+  background: #161616;
+  color: #b5b5b5;
+
+  cursor: pointer;
+  z-index: 1000;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.global-agent-ready:hover {
+  background: #1d1d1d;
+  border-color: #444;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* Ready notification dot */
+.global-agent-ready-dot {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+
+  width: 9px;
+  height: 9px;
+
+  border-radius: 50%;
+  background: #e30613;
+
+  box-shadow: 0 0 0 3px #161616;
+}
+
+/* =========================================
+   SMOOTH READY POP + SHAKE
+   ========================================= */
+
+.global-agent-ready.agent-ready-alert {
+  animation: agentReadyShake 0.75s ease-in-out;
+  border-color: #e30613;
+  color: #fff;
+
+  box-shadow:
+    0 0 0 1px rgba(227, 6, 19, 0.25),
+    0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+@keyframes agentReadyShake {
+  0% {
+    transform: scale(0.9) translateX(0);
+  }
+
+  15% {
+    transform: scale(1.08) translateX(-2px);
+  }
+
+  30% {
+    transform: scale(1.05) translateX(2px);
+  }
+
+  45% {
+    transform: scale(1.03) translateX(-2px);
+  }
+
+  60% {
+    transform: scale(1.02) translateX(1px);
+  }
+
+  75% {
+    transform: scale(1.01) translateX(-1px);
+  }
+
+  100% {
+    transform: scale(1) translateX(0);
+  }
+} 
