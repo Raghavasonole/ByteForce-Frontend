@@ -22,6 +22,7 @@ import AdminTasks from "./pages/AdminTasks";
 import AdminDocuments from "./pages/AdminDocuments";
 import AuditLogs from "./pages/AuditLogs";
 import AdminSettings from "./pages/AdminSettings";
+import AdminProfile from "./pages/AdminProfile";
 
 import DWGIntelligence from "./pages/DWGIntelligence";
 
@@ -50,6 +51,14 @@ function App() {
     setActivePage,
     theme,
     setTheme,
+    collapsed,
+    setCollapsed,
+    accent,
+    setAccent,
+    density,
+    setDensity,
+    reduceMotion,
+    setReduceMotion,
     agentExecution,
     setAgentExecution,
     generatedResponse,
@@ -68,14 +77,7 @@ function App() {
           );
 
         case "admin-inspection-agent":
-          return (
-            <AdminOverview
-              setAgentExecution={setAgentExecution}
-              agentExecution={agentExecution}
-              generatedResponse={generatedResponse}
-              setGeneratedResponse={setGeneratedResponse}
-            />
-          );
+          return <DWGIntelligence />;
 
         case "admin-workbench":
           return <AdminWorkbench />;
@@ -96,10 +98,21 @@ function App() {
           return <UsersPermissions />;
 
         case "admin-settings":
+          return <AdminSettings />;
+
+        case "admin-profile":
           return (
-            <AdminSettings
+            <AdminProfile
               theme={theme}
               setTheme={setTheme}
+              collapsed={collapsed}
+              setCollapsed={setCollapsed}
+              accent={accent}
+              setAccent={setAccent}
+              density={density}
+              setDensity={setDensity}
+              reduceMotion={reduceMotion}
+              setReduceMotion={setReduceMotion}
             />
           );
 
@@ -144,7 +157,15 @@ function App() {
         return <Settings />;
 
       default:
-        return <Overview setActivePage={setActivePage} />;
+  return (
+    <Overview
+      setActivePage={setActivePage}
+      setAgentExecution={setAgentExecution}
+      agentExecution={agentExecution}
+      generatedResponse={generatedResponse}
+      setGeneratedResponse={setGeneratedResponse}
+    />
+  );
     }
   };
 
@@ -158,6 +179,14 @@ function App() {
         setActivePage,
         theme,
         setTheme,
+        collapsed,
+        setCollapsed,
+        accent,
+        setAccent,
+        density,
+        setDensity,
+        reduceMotion,
+        setReduceMotion,
         agentExecution,
         setAgentExecution,
         generatedResponse,
@@ -168,6 +197,14 @@ function App() {
           setActivePage,
           theme,
           setTheme,
+          collapsed,
+          setCollapsed,
+          accent,
+          setAccent,
+          density,
+          setDensity,
+          reduceMotion,
+          setReduceMotion,
           agentExecution,
           setAgentExecution,
           generatedResponse,

@@ -1,8 +1,13 @@
-export const navigation = [
+const navigation = [
   {
     id: "overview",
     label: "Overview",
     icon: "home",
+  },
+  {
+    id: "dwg-intelligence",
+    label: "Inspection Agent",
+    icon: "work",
   },
   {
     id: "workbench",
@@ -10,49 +15,29 @@ export const navigation = [
     icon: "work",
   },
   {
-    id: "dwg-intelligence",
-    label: "Inspection Agent",
-    icon: "document",
-  },
-  {
     id: "knowledge",
     label: "Knowledge Base",
     icon: "book",
   },
   {
-    id: "equipment",
-    label: "Equipment",
-    icon: "equipment",
+    id: "tasks",
+    label: "Tasks",
+    icon: "tasks",
   },
   {
     id: "documents",
     label: "Documents",
     icon: "document",
   },
-  {
-    id: "reports",
-    label: "Reports",
-    icon: "report",
-  },
-  {
-    id: "tasks",
-    label: "My Tasks",
-    icon: "tasks",
-  },
-  {
-    id: "notifications",
-    label: "Notifications",
-    icon: "notifications",
-  },
 ];
 
-export const settingsNavigation = {
+const settingsNavigation = {
   id: "settings",
   label: "Settings",
   icon: "settings",
 };
 
-export const adminNavigation = [
+const adminNavigation = [
   {
     id: "admin-overview",
     label: "Overview",
@@ -61,7 +46,7 @@ export const adminNavigation = [
   {
     id: "admin-inspection-agent",
     label: "Inspection Agent",
-    icon: "document",
+    icon: "work",
   },
   {
     id: "admin-workbench",
@@ -91,13 +76,19 @@ export const adminNavigation = [
   {
     id: "users-permissions",
     label: "Users & Permissions",
-    icon: "equipment",
+    icon: "tasks",
   },
 ];
 
-
-export const adminSettingsNavigation = {
+const adminSettingsNavigation = {
   id: "admin-settings",
   label: "Admin Settings",
   icon: "settings",
+};
+
+export {
+  navigation,
+  settingsNavigation,
+  adminNavigation,
+  adminSettingsNavigation,
 };

@@ -88,6 +88,9 @@ function AdminOverview({
       }`}
     >
       <div className="admin-agent-main">
+        <div className="admin-overview-tagline">
+  Confidential Intelligence. Built On-Premise.
+</div>
         <div className="admin-agent-layout">
           <div className="admin-agent-left">
 
@@ -97,71 +100,72 @@ function AdminOverview({
               </div>
 
               <div className="admin-agent-input">
-                <textarea
-                  value={question}
-                  onChange={(event) =>
-                    setQuestion(event.target.value)
-                  }
-                  placeholder="Ask the local agent to analyze a document, inspect equipment, search the knowledge base or prepare a report..."
-                />
+  <textarea
+    value={question}
+    onChange={(event) =>
+      setQuestion(event.target.value)
+    }
+    placeholder="Ask the local agent to analyze a document, inspect equipment, search the knowledge base or prepare a report..."
+  />
 
-                <button
-                  type="button"
-                  className="admin-agent-mic"
-                  onClick={() =>
-                    alert("Voice input - demo only")
-                  }
-                >
-                  🎙
-                </button>
-              </div>
+  <button
+    type="button"
+    className="admin-agent-mic"
+    onClick={() =>
+      alert("Voice input - demo only")
+    }
+    aria-label="Voice input"
+  >
+    🎙
+  </button>
+</div>
 
-              <div className="admin-ask-actions">
-                <div className="admin-ask-tools">
-                  <div className="admin-agent-menu">
-                    <button
-                      type="button"
-                      className="admin-agent-plus"
-                      onClick={() =>
-                        setShowAttachments(!showAttachments)
-                      }
-                    >
-                      +
-                    </button>
+<div className="admin-ask-actions">
+  <div className="admin-ask-tools">
+    <div className="admin-agent-menu">
+      <button
+        type="button"
+        className="admin-agent-plus"
+        onClick={() =>
+          setShowAttachments(!showAttachments)
+        }
+      >
+        +
+      </button>
 
-                    {showAttachments && (
-                      <div className="admin-agent-menu-dropdown">
-                        <button
-                          type="button"
-                          onClick={() =>
-                            alert("Image upload - demo only")
-                          }
-                        >
-                          Image Upload
-                        </button>
+      {showAttachments && (
+        <div className="admin-agent-menu-dropdown">
+          <button
+            type="button"
+            onClick={() =>
+              alert("Image upload - demo only")
+            }
+          >
+            Image Upload
+          </button>
 
-                        <button
-                          type="button"
-                          onClick={() =>
-                            alert("File upload - demo only")
-                          }
-                        >
-                          File Upload
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
+          <button
+            type="button"
+            onClick={() =>
+              alert("File upload - demo only")
+            }
+          >
+            File Upload
+          </button>
+        </div>
+      )}
+    </div>
+  </div>
 
-                <button
-                  type="button"
-                  className="workbench-submit"
-                  onClick={runAgent}
-                >
-                  Run agent →
-                </button>
-              </div>
-            </div>
+  <button
+    type="button"
+    className="workbench-submit"
+    onClick={runAgent}
+  >
+    Run agent →
+  </button>
+</div>
+</div>
 
             {generatedResponse && (
               <div className="workbench-card admin-response-card">

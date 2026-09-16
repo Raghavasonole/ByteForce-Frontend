@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 function AdminDocuments() {
-  const [search, setSearch] = useState("");
-  const [uploaded, setUploaded] = useState(false);
+  const fileInputRef = useRef(null);
 
-  const documents = [
+  const [search, setSearch] = useState("");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [documents, setDocuments] = useState([
     {
       name: "Inspection_Report_P204.pdf",
       type: "PDF",
@@ -35,48 +36,144 @@ function AdminDocuments() {
       status: "Error",
       updated: "Yesterday",
     },
-  ];
+    {
+      name: "Plant_Maintenance_Presentation.pptx",
+      type: "PPT",
+      status: "Processed",
+      updated: "Today, 08:18 AM",
+    },
+  ]);
 
-  const visibleDocuments = documents.filter((document) =>
-    document.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const getFileType = (fileName) => {
+    const extension = fileName.split(".").pop().toLowerCase();
+
+    if (extension === "pdf") return "PDF";
+
+    if (extension === "doc" || extension === "docx") {
+      return "DOCX";
+    }
+
+    if (
+      extension === "ppt" ||
+      extension === "pptx"
+    ) {
+      return "PPT";
+    }
+
+    if (
+      extension === "png" ||
+      extension === "jpg" ||
+      extension === "jpeg" ||
+      extension === "webp" ||
+      extension === "gif"
+    ) {
+      return "Image";
+    }
+
+    return "Other";
+  };
+
+  const visibleDocuments = documents.filter((document) => {
+    const matchesSearch = document.name
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    const matchesType =
+      typeFilter === "all" ||
+      document.type.toLowerCase() === typeFilter;
+
+    return matchesSearch && matchesType;
+  });
+
+  const handleUpload = (event) => {
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    const type = getFileType(file.name);
+
+    if (type === "Other") {
+      window.alert(
+        "Only PDF, DOCX, PPT/PPTX and image files are supported."
+      );
+
+      event.target.value = "";
+      return;
+    }
+
+    const newDocument = {
+      name: file.name,
+      type,
+      status: "Processing",
+      updated: "Just now",
+    };
+
+    setDocuments((currentDocuments) => [
+      newDocument,
+      ...currentDocuments,
+    ]);
+
+    event.target.value = "";
+  };
 
   return (
     <div className="documents-page admin-documents-page">
       <div className="page-header">
         <div>
           <h1>Documents</h1>
-          <p>Manage uploaded workspace documents and processing status.</p>
+          <p>
+            Manage uploaded workspace documents and processing status.
+          </p>
         </div>
 
         <button
           type="button"
           className="page-primary-button"
-          onClick={() => setUploaded(true)}
+          onClick={() => fileInputRef.current?.click()}
         >
           Upload Document
         </button>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          hidden
+          accept=".pdf,.doc,.docx,.ppt,.pptx,.png,.jpg,.jpeg,.webp,.gif"
+          onChange={handleUpload}
+        />
       </div>
 
       <div className="documents-summary">
         <div>
           <span>Total Documents</span>
-          <strong>342</strong>
+          <strong>{documents.length}</strong>
         </div>
 
         <div>
           <span>Processed</span>
-          <strong>331</strong>
+          <strong>
+            {documents.filter(
+              (document) => document.status === "Processed"
+            ).length}
+          </strong>
         </div>
 
         <div>
           <span>Processing</span>
-          <strong>8</strong>
+          <strong>
+            {documents.filter(
+              (document) => document.status === "Processing"
+            ).length}
+          </strong>
         </div>
 
         <div>
           <span>Errors</span>
-          <strong>3</strong>
+          <strong>
+            {documents.filter(
+              (document) => document.status === "Error"
+            ).length}
+          </strong>
         </div>
       </div>
 
@@ -92,24 +189,24 @@ function AdminDocuments() {
           />
         </div>
 
-        <select defaultValue="all">
+        <select
+          value={typeFilter}
+          onChange={(event) => setTypeFilter(event.target.value)}
+        >
           <option value="all">All Types</option>
           <option value="pdf">PDF</option>
           <option value="docx">DOCX</option>
+          <option value="ppt">PPT</option>
           <option value="image">Images</option>
         </select>
       </div>
 
-      {uploaded && (
-        <div className="admin-upload-notice">
-          New_Document.pdf uploaded successfully. Processing started.
-        </div>
-      )}
-
       <div className="documents-table-card">
         <div className="documents-table-header">
           <h2>Workspace Documents</h2>
-          <p>Recently uploaded and processed documents.</p>
+          <p>
+            Recently uploaded and processed documents.
+          </p>
         </div>
 
         <div className="documents-table-wrapper">
@@ -126,10 +223,12 @@ function AdminDocuments() {
 
             <tbody>
               {visibleDocuments.map((document) => (
-                <tr key={document.name}>
+                <tr key={`${document.name}-${document.updated}`}>
                   <td>
                     <div className="document-name">
-                      <span className="document-file-icon">□</span>
+                      <span className="document-file-icon">
+                        □
+                      </span>
 
                       <div>
                         <strong>{document.name}</strong>
@@ -151,7 +250,10 @@ function AdminDocuments() {
                   <td>{document.updated}</td>
 
                   <td>
-                    <button type="button" className="table-action">
+                    <button
+                      type="button"
+                      className="table-action"
+                    >
                       ⋯
                     </button>
                   </td>
@@ -164,7 +266,9 @@ function AdminDocuments() {
         {visibleDocuments.length === 0 && (
           <div className="admin-empty-state">
             <strong>No documents found</strong>
-            <p>Try a different search.</p>
+            <p>
+              Try a different search or document type.
+            </p>
           </div>
         )}
       </div>

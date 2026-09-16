@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
   navigation,
   settingsNavigation,
@@ -82,7 +84,7 @@ const icons = {
   settings: (
     <svg viewBox="0 0 24 24">
       <circle cx="12" cy="12" r="3" />
-      <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 1.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.1h-2.6v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1-1.8-1.8.1-.1A1.7 1.7 0 0 0 8 15a1.7 1.7 0 0 0-1.5-1H6.4v-2.6h.1A1.7 1.7 0 0 0 8 10a1.7 1.7 0 0 0-.3-1.9l-.1-.1 1.8-1.8.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1.9-.3l.1-.1 1.8 1.8-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.1v2.6h-.1a1.7 1.7 0 0 0-1.5 1.4z" />
+      <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 1.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.1h-2.6v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1-1.8-1.8.1-.1A1.7 1.7 0 0 0 8 15a1.7 1.7 0 0 0-1.5-1H6.4v-2.6h.1A1.7 1.7 0 0 0 8 10a1.7 1.7 0 0 0-.3-1.9l-.1-.1 1.8-1.8.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 .3 1.9 1.7 1.7 0 0 0 1.5 1h.1v2.6h-.1a1.7 1.7 0 0 0-1.5 1.4z" />
     </svg>
   ),
 };
@@ -93,7 +95,11 @@ function Sidebar({
   collapsed,
   setCollapsed,
   isAdmin,
+  onLogout,
 }) {
+  const [showProfileMenu, setShowProfileMenu] =
+    useState(false);
+
   const currentNavigation = isAdmin
     ? adminNavigation
     : navigation;
@@ -104,10 +110,45 @@ function Sidebar({
 
   const handleNavigation = (page) => {
     setActivePage(page);
+    setShowProfileMenu(false);
+  };
+
+  const handleProfileClick = (event) => {
+    event.stopPropagation();
+
+    setShowProfileMenu((current) => !current);
+  };
+
+  const handleAccountClick = (event) => {
+    event.stopPropagation();
+    setShowProfileMenu(false);
+
+    setActivePage(
+      isAdmin ? "admin-settings" : "settings"
+    );
+  };
+
+  const handleCustomizeProfile = (event) => {
+    event.stopPropagation();
+    setShowProfileMenu(false);
+
+    setActivePage(
+      isAdmin ? "admin-profile" : "settings"
+    );
+  };
+
+  const handleLogout = (event) => {
+    event.stopPropagation();
+    setShowProfileMenu(false);
+    onLogout();
   };
 
   return (
-    <aside className={`sidebar ${collapsed ? "collapsed" : ""}`}>
+    <aside
+      className={`sidebar ${
+        collapsed ? "collapsed" : ""
+      }`}
+    >
       <div className="sidebar-inner">
         <div className="brand">
           <span>MRPL prototype</span>
@@ -119,10 +160,16 @@ function Sidebar({
               key={item.id}
               type="button"
               className={`nav-item ${
-                activePage === item.id ? "active" : ""
+                activePage === item.id
+                  ? "active"
+                  : ""
               }`}
-              onClick={() => handleNavigation(item.id)}
-              title={collapsed ? item.label : ""}
+              onClick={() =>
+                handleNavigation(item.id)
+              }
+              title={
+                collapsed ? item.label : ""
+              }
             >
               <span className="nav-icon">
                 {icons[item.icon]}
@@ -139,10 +186,18 @@ function Sidebar({
           <button
             type="button"
             className={`nav-item ${
-              activePage === currentSettings.id ? "active" : ""
+              activePage === currentSettings.id
+                ? "active"
+                : ""
             }`}
-            onClick={() => handleNavigation(currentSettings.id)}
-            title={collapsed ? currentSettings.label : ""}
+            onClick={() =>
+              handleNavigation(currentSettings.id)
+            }
+            title={
+              collapsed
+                ? currentSettings.label
+                : ""
+            }
           >
             <span className="nav-icon">
               {icons[currentSettings.icon]}
@@ -153,20 +208,72 @@ function Sidebar({
             </span>
           </button>
 
-          <div className="sidebar-user">
-            <div className="avatar">
-              {isAdmin ? "A" : "E"}
-            </div>
+          <div className="sidebar-user-wrap">
+            <button
+              type="button"
+              className="sidebar-user"
+              onClick={handleProfileClick}
+            >
+              <div className="avatar">
+                {isAdmin ? "A" : "E"}
+              </div>
 
-            <div className="user-info">
-              <strong>
-                {isAdmin ? "Administrator" : "Employee"}
-              </strong>
+              <div className="user-info">
+                <strong>
+                  {isAdmin
+                    ? "Administrator"
+                    : "Employee"}
+                </strong>
 
-              <span>
-                {isAdmin ? "System Admin" : "Process Engineer"}
+                <span>
+                  {isAdmin
+                    ? "System Admin"
+                    : "Process Engineer"}
+                </span>
+              </div>
+
+              <span className="sidebar-profile-arrow">
+                {showProfileMenu ? "⌃" : "⌄"}
               </span>
-            </div>
+            </button>
+
+            {showProfileMenu && (
+              <div
+                className="sidebar-profile-menu sidebar-profile-menu-force"
+                onClick={(event) =>
+                  event.stopPropagation()
+                }
+              >
+                <button
+                  type="button"
+                  onClick={handleAccountClick}
+                >
+                  <span>👤</span>
+                  <span>Manage account</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={
+                    handleCustomizeProfile
+                  }
+                >
+                  <span>✦</span>
+                  <span>Customize</span>
+                </button>
+
+                <div className="sidebar-profile-divider" />
+
+                <button
+                  type="button"
+                  className="logout-option"
+                  onClick={handleLogout}
+                >
+                  <span>↪</span>
+                  <span>Sign out</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -174,7 +281,9 @@ function Sidebar({
       <button
         type="button"
         className="sidebar-toggle"
-        onClick={() => setCollapsed((value) => !value)}
+        onClick={() =>
+          setCollapsed((value) => !value)
+        }
         aria-label="Toggle sidebar"
       >
         <svg viewBox="0 0 24 24">
